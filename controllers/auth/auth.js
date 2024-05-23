@@ -1,7 +1,9 @@
 // import db from '../../db/mysql.js'
 import AuthModel from '../../models/auth/auth.js'
+import userModel from '../../models/user.model/user.model.js';
 import errorHandler from '../../error/error.js';
 import jwt from '../../utils/jwt.js';
+
 
 const loginController = async(req,res,next)=>{
     // 从请求体中获取账号和密码
@@ -58,7 +60,7 @@ const loginController = async(req,res,next)=>{
 
 const registerController = async(req,res,next)=>{
     const {account,password} = req.body
-
+    
     const [result,fields] = await AuthModel.findManyModel(account)
 
     // errorHandler('Register Error',400)
@@ -67,14 +69,21 @@ const registerController = async(req,res,next)=>{
     if(result.length == 0){
         // 正式插入
         const result = await AuthModel.createModel(account,password)
-        // console.log('register response',result);
+        // 注册成功，则自动生成用户的信息
         if(result.affectedRows > 0){
-            res.status(200).json({
-                code: 200,
-                data: {
-                    message: '插入成功。',
-                }
-            });
+
+            // 自动生成一条信息，对应me的页面
+            const response = await userModel.createModel(result.insertId)
+
+            if(response.affectedRows >0){
+                res.status(200).json({
+                    code: 200,
+                    data: {
+                        message: '注册成功！。',
+                    }
+                });
+            }
+            
         }else{
             res.status(500).send({
                 code:500,

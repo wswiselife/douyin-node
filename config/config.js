@@ -11,5 +11,5 @@ const mysql = {
 
 export default {
     jwtSecret,
-    mysql
+    mysql,
 }

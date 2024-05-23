@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {                        
+      "target": "es6",                               
+      "module": "ES6",                           
+      "outDir": "./dist",                             
+      "rootDir": "../douyin-node-20240424",                             
+      "strict": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,                       
+    },
+    "files": ["routes"],
+    "include": [
+        "./routes"
+    ],
+    "exclude":[
+      "./node_modules"
+    ]
+  }

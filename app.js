@@ -12,7 +12,7 @@ app.use('*',(req,res,next)=>{
     // 允许使用的请求方法   get\post\head为默认
     res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE')
     // 默认只支持三种相应头，需要支持application/json要设置content-type
-    res.setHeader('Access-Control-Allow-Headers','Content-Type')
+    res.setHeader('Access-Control-Allow-Headers','Content-Type,AC-User-Agent,token,Authorization')
     next()
 })
 
