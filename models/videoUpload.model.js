@@ -7,10 +7,11 @@ const videoTable = `
         mimetype varchar(255) not null,
         filename varchar(255) not null,
         size int(11) not null,
-        auth_id int(11) not null,
-        foreign key (auth_id) references auth(id)
+        user_id int(11) not null,
+        video_url varchar(255) not null,
+        create_time timestamp default current_timestamp,
+        foreign key (user_id) references user(id)
     )
-
 `
 
 db.query(videoTable,(error)=>{
@@ -19,10 +20,10 @@ db.query(videoTable,(error)=>{
     }
 })
 
-const createModel = ({originalname, mimetype, filename, size, user_id})=>{
+const createModel = ({originalname, mimetype, filename, size, user_id,video_url})=>{
     return new Promise((resolve,reject)=>{
-        db.query('insert into video (originalname,mimetype,filename,size,auth_id) values (?,?,?,?,?)',
-            [originalname,mimetype,filename,size,user_id],
+        db.query('insert into video (originalname,mimetype,filename,size,user_id,video_url) values (?,?,?,?,?,?)',
+            [originalname,mimetype,filename,size,user_id,video_url],
             (error,result)=>{
                 if(error){
                     reject(error)
@@ -32,7 +33,7 @@ const createModel = ({originalname, mimetype, filename, size, user_id})=>{
     })
 }
 
-const findOneModel = ({id})=>{
+const findOneModel = (id)=>{
     return new Promise((resolve,reject)=>{
         db.query('select * from video where id = ?',id,(error,result)=>{
             if(error){
@@ -43,7 +44,21 @@ const findOneModel = ({id})=>{
     })
 }
 
+// 根据用户id获取作品数量
+const getVideoUploadCountModel = ({user_id})=>{
+    return new Promise((resolve,reject)=>{
+        const sql = `select video_url,id from video where user_id = ?`
+        db.query(sql,[user_id],(error,result)=>{
+            if(error){
+                reject(error)
+            }
+            resolve(result)
+        })
+    })
+}
+
 export default {
     createModel,
-    findOneModel
+    findOneModel,
+    getVideoUploadCountModel
 }

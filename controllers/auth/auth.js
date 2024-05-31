@@ -1,6 +1,6 @@
 // import db from '../../db/mysql.js'
 import AuthModel from '../../models/auth/auth.js'
-import userModel from '../../models/user.model/user.model.js';
+import userModel from '../../models/userInfo.model.js';
 import errorHandler from '../../error/error.js';
 import jwt from '../../utils/jwt.js';
 

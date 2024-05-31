@@ -11,6 +11,7 @@ import ffmpeg from 'fluent-ffmpeg';
 const fileUpload = multer({
     // 设置文件存放的位置
     dest: "uploads/",
+    // 也可以设置文件名
 });
 
 /**
@@ -25,6 +26,7 @@ export const fileInterceptor = fileUpload.single("file");
  * 文件处理器
  */
 export const fileProcessor = async (request,response,next)=>{
+    // 这里的file也要保持一致
     const res = request.file
 
     // 读取图片

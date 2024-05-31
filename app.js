@@ -1,6 +1,10 @@
 // const express = require('express')
 import express from 'express'
 import routes from './routes/routes.js'
+import path from 'path'
+import { fileURLToPath } from 'url';
+
+import defaultErrorHandle from './error/error.js'
 
 const app = express()
 const port = 3000
@@ -31,8 +35,19 @@ app.use('*',(req,res,next)=>{
 // 支持返回json格式数据
 app.use(express.json())
 
+// 获取当前文件的路径和目录名
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // 路由模块
 routes(app);
+
+
+/**
+ * 异常处理器
+ */
+app.use(defaultErrorHandle)
 
 app.listen(port,()=>{
     console.log(`Example app listening on port ${port}`)

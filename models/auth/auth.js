@@ -4,8 +4,8 @@ import db from '../../db/mysql.js'
 const userTable = `
     create table if not exists auth(
         id int primary key auto_increment,
-        password varchar(255) not null ,
         account varchar(255) not null unique,
+        password varchar(255) not null ,
         create_time timestamp default current_timestamp
     )
 `

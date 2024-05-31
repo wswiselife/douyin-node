@@ -1,4 +1,4 @@
-import db from "../../db/mysql.js";
+import db from "../db/mysql.js";
 
 
 //   foreign key (auth_id) references auth(id) 建表时好像不用这个
@@ -18,11 +18,12 @@ const userTable = `
         unique_id varchar(255) ,
         cover_url varchar(255) ,
         ip_location varchar(255) ,
-        aweme_count int ,
-        friends int ,
-        following_count int ,
+        aweme_count int,
+        friends int,
+        following_count int,
         follower_count int,
-        favoriting_count int
+        favoriting_count int,
+        foreign key (auth_id) references auth(id)
     )
 
 `
@@ -80,7 +81,11 @@ const updateModel = (userData, user_id) => {
                     case 'school':
                     case 'unique_id':
                     case 'cover_url':
+                    case 'aweme_count':
                     case 'ip_location':
+                    case 'friends':
+                    case 'follower_count':
+                    case 'following_count':
                         updates.push(`${key} = '${userData[key]}'`);
                         break;
                     default:
@@ -114,7 +119,25 @@ const findManyModel = (user_id)=>{
             if(error){
                 reject(error)
             }
-            resolve([result,filed])
+            resolve(result)
+        })
+    })
+}
+
+/**
+ * 这里可以处理成一个更新接口的数据
+ * @param totalLikesCount
+ * @param user_id
+ * @returns {Promise<unknown>}
+ */
+const updateFavoritingCountModel = (totalLikesCount,user_id)=>{
+    return new Promise((resolve, reject) => {
+        const sql = `update user set favoriting_count = ? where id = ?`
+        db.query(sql,[totalLikesCount,user_id],(error,result)=>{
+            if(error){
+                reject(error)
+            }
+            resolve(result)
         })
     })
 }
@@ -122,5 +145,6 @@ const findManyModel = (user_id)=>{
 export default {
     updateModel,
     findManyModel,
-    createModel
+    createModel,
+    updateFavoritingCountModel
 }

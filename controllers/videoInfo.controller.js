@@ -1,6 +1,6 @@
 import videoInfoService from '../service/videoInfo.service.js'
 
-const getVideo =async (request,response)=>{
+const getVideo =async (request,response,next)=>{
 
     const {user_id} = request.user
 
@@ -9,14 +9,20 @@ const getVideo =async (request,response)=>{
     if(!defaultId) {
         defaultId = 1
     }
-
-    const data = await videoInfoService.getVideoInfo(defaultId)
-
-    response.send({
-        code:200,
-        message:data
-    })
-}
+    try{
+          const result = await videoInfoService.getVideoInfo(defaultId)
+          if(result){
+              response.send({
+                  code:200,
+                  data:result,
+                  message:'获取视频成功'
+              })
+          }
+    }
+    catch(error) {
+            next(error)
+        }
+    }
 
 export default {
     getVideo
