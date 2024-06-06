@@ -87,9 +87,29 @@ const getFollowingCountModel = (user_id)=>{
     })
 }
 
+/**
+ * 用户是否关注视频作者
+ * @param user_id
+ * @param follow_id
+ * @returns {Promise<unknown>}
+ */
+const getFollowStatusModel = (user_id,follow_id)=>{
+    return new Promise((resolve,reject)=>{
+        const sql = `select id from follow where follower = ? and following = ?`
+
+        db.query(sql,[follow_id,user_id],(error,result)=>{
+            if(error){
+                reject(error)
+            }
+            resolve(result)
+        })
+    })
+}
+
 export default {
     createFollowModel,
     deleteFollowModel,
     getFollowerCountModel,
-    getFollowingCountModel
+    getFollowingCountModel,
+    getFollowStatusModel
 }

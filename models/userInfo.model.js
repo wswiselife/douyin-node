@@ -142,9 +142,22 @@ const updateFavoritingCountModel = (totalLikesCount,user_id)=>{
     })
 }
 
+const getUserInfoByUserId = (user_id)=>{
+    return new Promise((resolve,reject)=>{
+        const sql = `select * from user where id = ?`
+        db.query(sql,[user_id],(error,result)=>{
+            if(error){
+                reject(error)
+            }
+            resolve(result)
+        })
+    })
+}
+
 export default {
     updateModel,
     findManyModel,
     createModel,
-    updateFavoritingCountModel
+    updateFavoritingCountModel,
+    getUserInfoByUserId
 }

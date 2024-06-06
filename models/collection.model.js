@@ -56,8 +56,22 @@ const getOneVideoCollectionCountModel = ({video_id})=>{
     })
 }
 
+const getCollectionStatusModel = (user_id,video_id)=>{
+    return new Promise((resolve,reject)=>{
+        const sql =`select collection_id from collection where user_id = ? and video_id = ?`
+
+        db.query(sql,[user_id,video_id],(error,result)=>{
+            if(error){
+                reject(error)
+            }
+            resolve(result)
+        })
+    })
+}
+
 export default {
     createModel,
     deleteCollectionModel,
-    getOneVideoCollectionCountModel
+    getOneVideoCollectionCountModel,
+    getCollectionStatusModel
 }

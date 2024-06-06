@@ -1,16 +1,19 @@
 import videoInfoService from '../service/videoInfo.service.js'
 
 const getVideo =async (request,response,next)=>{
-
-    const {user_id} = request.user
-
-    let defaultId = user_id
-    //没有登录时，默认用户-todo代办
-    if(!defaultId) {
-        defaultId = 1
+    let user_id
+    if(request.user?.user_id){
+        let id = request.user.user_id
+        user_id = id
+    }else{
+        // 默认用户
+        user_id = 0
     }
+
+    console.log(user_id)
+
     try{
-          const result = await videoInfoService.getVideoInfo(defaultId)
+          const result = await videoInfoService.getVideoInfo(user_id)
           if(result){
               response.send({
                   code:200,
