@@ -40,7 +40,27 @@ const getUserInfoController =async (req,res,next)=>{
 
 }
 
+/**
+ * 获取发布我的视频
+ */
+const getMyVideoController =async (request,response,next)=>{
+    const {user_id}  = request.user
+    try{
+        const result = await userInfoService.getMyVideoService(user_id)
+        if(response){
+            response.status(200).send({
+                code:200,
+                message:'获取视频成功！',
+                data:result
+            })
+        }
+    }catch(error){
+        next(error)
+    }
+}
+
 export default{
     updateUserInfoController,
-    getUserInfoController
+    getUserInfoController,
+    getMyVideoController
 }

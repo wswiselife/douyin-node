@@ -4,6 +4,7 @@ const videoInfoTable = `
     create table if not exists video_info(
         id int not null primary key auto_increment,
         description varchar(255) not null,
+        video_url varchar(255) not null,
         cover varchar(255) not null,
         video_id int not null,
         music int,
@@ -39,12 +40,12 @@ const findVideoById = (id) => {
     })
 }
 
-const createVideoInfoModel = ({video_id,description,user_id,cover})=>{
+const createVideoInfoModel = (video_id,description,user_id,video_url,cover_url)=>{
     return new Promise((resolve,reject)=>{
-        const sql = `insert into video_info (video_id,description,user_id,cover) values (?,?,?,?)`
+        const sql = `insert into video_info (video_id,description,user_id,video_url,cover) values (?,?,?,?,?)`
         // cover 处理成url-2024-05-31todo
         //music 待处理
-        db.query(sql,[video_id,description,user_id,cover],(error,result)=>{
+        db.query(sql,[video_id,description,user_id,video_url,cover_url],(error,result)=>{
             if(error){
                 reject(error)
             }
@@ -73,9 +74,22 @@ const updateEngagementModel = ({like_count,comment_count,collection_count,video_
     })
 }
 
+const findUserVideoModel = (userId)=>{
+    return new Promise((resolve,reject)=>{
+        const sql = `SELECT id, video_id, cover, like_count FROM video_info WHERE user_id = ?`
+        db.query(sql,[userId],(error,results)=>{
+            if(error){
+                reject(error)
+            }
+            resolve(results)
+        })
+    })
+}
+
 
 export default {
     findVideoById,
     createVideoInfoModel,
-    updateEngagementModel
+    updateEngagementModel,
+    findUserVideoModel
 }

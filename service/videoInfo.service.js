@@ -12,11 +12,33 @@ import followModel from '../models/follow.model.js'
 // 获取用户名
 import userInfoModel from '../models/userInfo.model.js'
 
-const getVideoInfo = async(user_id)=>{
-    // 用户账号
-    const video_id = Math.floor(Math.random() * 13) + 1;
-    // 根据用户id推荐视频，用视频的id来查找视频，然后返回
-    // 假定返回的id为1
+const getVideoInfo = async(user_id,videoId)=>{
+    let generatedNumbers = []; // 用来存储已经生成的随机数
+
+    function getUniqueRandomNumber() {
+        if (generatedNumbers.length >= 20) {
+            console.log("All numbers have been generated.");
+            return null; // 所有数字都已生成，返回null表示没有更多的数字
+        }
+
+        let randomNumber;
+        do {
+            randomNumber = Math.floor(Math.random() * 20) + 1;
+        } while (generatedNumbers.includes(randomNumber));
+
+        generatedNumbers.push(randomNumber);
+        return randomNumber;
+    }
+
+    let video_id
+    if(videoId == 0){
+        // 用户账号
+        video_id = getUniqueRandomNumber();
+        // 根据用户id推荐视频，用视频的id来查找视频，然后返回
+        // 假定返回的id为1
+    }else{
+        video_id = videoId
+    }
 
     console.log('返回视频id(22行)',video_id)
     // 根据视频的id，获取喜欢、评论、收藏的数量，添加到信息中

@@ -9,6 +9,7 @@ const videoTable = `
         size int(11) not null,
         user_id int(11) not null,
         video_url varchar(255) not null,
+        cover_url varchar(255) not null,
         create_time timestamp default current_timestamp,
         foreign key (user_id) references user(id)
     )
@@ -20,10 +21,10 @@ db.query(videoTable,(error)=>{
     }
 })
 
-const createModel = ({originalname, mimetype, filename, size, user_id,video_url})=>{
+const createModel = ({originalname, mimetype, filename, size, user_id,video_url,cover_url})=>{
     return new Promise((resolve,reject)=>{
-        db.query('insert into video (originalname,mimetype,filename,size,user_id,video_url) values (?,?,?,?,?,?)',
-            [originalname,mimetype,filename,size,user_id,video_url],
+        db.query('insert into video (originalname,mimetype,filename,size,user_id,video_url,cover_url) values (?,?,?,?,?,?,?)',
+            [originalname,mimetype,filename,size,user_id,video_url,cover_url],
             (error,result)=>{
                 if(error){
                     reject(error)

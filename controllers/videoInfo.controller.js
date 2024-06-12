@@ -1,6 +1,7 @@
 import videoInfoService from '../service/videoInfo.service.js'
 
 const getVideo =async (request,response,next)=>{
+    // 用户名
     let user_id
     if(request.user?.user_id){
         let id = request.user.user_id
@@ -10,10 +11,18 @@ const getVideo =async (request,response,next)=>{
         user_id = 0
     }
 
-    console.log(user_id)
+    // console.log(user_id)
+    // 视频id
+    let videoId
+    if(request.body?.videoId){
+        videoId = request.body.videoId
+    }else{
+        videoId = 0
+    }
+
 
     try{
-          const result = await videoInfoService.getVideoInfo(user_id)
+          const result = await videoInfoService.getVideoInfo(user_id,videoId)
           if(result){
               response.send({
                   code:200,

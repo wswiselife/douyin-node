@@ -8,4 +8,6 @@ router.post('/updateUserInfo',verifyTokenMid ,userInfoController.updateUserInfoC
 
 router.get('/getUserInfo',verifyTokenMid,userInfoController.getUserInfoController)
 
+router.post('/getMyVideo',verifyTokenMid,userInfoController.getMyVideoController)
+
 export default router

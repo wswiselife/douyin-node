@@ -1,10 +1,16 @@
 import userInfoModel from '../models/userInfo.model.js'
 import videoUploadModel from '../models/videoUpload.model.js'
-// 放弃使用视频的信息接口处理获赞数量
+// 放弃使用视频的信息接口处理获赞数量--2024-06-10处理我的作品
 import videoInfoModel from '../models/videoInfo.model.js'
 import followModel from '../models/follow.model.js'
 import videoLikeModel from '../models/videoLike.model.js'
 
+/**
+ * 更新我的个人信息
+ * @param userData
+ * @param user_id
+ * @returns {Promise<{}>}
+ */
 const updateUserInfoService = async(userData,user_id)=>{
 
     try{
@@ -19,6 +25,11 @@ const updateUserInfoService = async(userData,user_id)=>{
     }
 }
 
+/**
+ * 获取我的个人信息
+ * @param user_id
+ * @returns {Promise<unknown>}
+ */
 const getUserInfoService = async(user_id)=>{
     try{
         /**
@@ -66,21 +77,23 @@ const getUserInfoService = async(user_id)=>{
         const followerResult = await followModel.getFollowerCountModel(user_id)
         const followingResult = await followModel.getFollowingCountModel(user_id)
 
-        console.log(followerResult.length)
-        console.log(followingResult.length)
+        // console.log(followerResult.length)
+        // console.log(followingResult.length)
 
         // const follower_count = followerResult.length
         // const following_count = followingResult.length
 
+        // 将用户信息处理到信息表中
         const userData = {
             aweme_count:allAweme.length,
             follower_count:followerResult.length,
             following_count:followingResult.length
         }
 
-        console.log(userData)
+        // console.log(userData)
 
         //更新信息
+        // 将用户信息处理到信息表中
         const userInfoResult = await userInfoModel.updateModel(userData,user_id)
 
         // console.log(userInfoResult)
@@ -95,13 +108,24 @@ const getUserInfoService = async(user_id)=>{
         throw new Error(error)
     }
 }
+
+
 /**
  * 获取我的所有作品的封面和播放地址（tab栏）
  * @param user_id
  * @returns {Promise<void>}
  */
-const getMyAwemeInfoService = async(user_id)=>{
+const getMyVideoService = async(user_id)=>{
 
+    try{
+        const result = await videoInfoModel.findUserVideoModel(user_id)
+        if(result){
+            return result
+        }
+    }
+    catch(error){
+        throw new Error(error)
+    }
 }
 /**
  * 获取我收藏的所有视频的封面和地址
@@ -122,5 +146,6 @@ const getMyLikeInfoService = async(user_id)=>{
 
 export default {
     updateUserInfoService,
-    getUserInfoService
+    getUserInfoService,
+    getMyVideoService
 }

@@ -6,7 +6,7 @@ import verifyTokenMid from '../middlewares/jwt/jwt.js'
 
 const router = express.Router();
 
-router.post("/upload", verifyTokenMid,fileInterceptor,fileProcessor, uploadVideo.createVideoUploadController);
+// router.post("/upload", verifyTokenMid,fileInterceptor,fileProcessor, uploadVideo.createVideoUploadController);
 
 router.post('/getOneVideo/:id',uploadVideo.getOneVideo)
 

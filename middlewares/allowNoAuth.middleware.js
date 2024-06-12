@@ -16,7 +16,7 @@ const verifyToken = (token) => {
 
 const verifyTokenMid = async (req, res, next) => {
     const token = req.headers.authorization;
-    console.log('token', token);
+    // console.log('token', token);
 
     if (!token || token === 'Bearer null') {
         // 如果没有 token 或 token 为 'Bearer null'，直接跳过验证
